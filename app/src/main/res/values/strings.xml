@@ -4,7 +4,7 @@
     <string name="loginAboutGithub">Facing some issue, please create a ticket and we can look into it. Do explore this project, maybe you could resolve some issues.</string>
     <string name="loginAboutLetsConnect">My social media accounts, Let\'s connect</string>
     <string name="loginToCodetantra">Login to Code Tantra</string>
-    <string name="enterYourEmail">Enter your email address></string>
+    <string name="enterYourEmail">Enter your email address</string>
     <string name="enterYourPassword">Enter your password</string>
     <string name="loginCodentra">Login CodeTantra</string>
     <string name="unableToLogin">Unable To Login.\n Wrong email or password</string>
