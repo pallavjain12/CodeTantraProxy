@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/loginLoginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="212dp"
@@ -19,11 +19,11 @@
 
     <EditText
         android:id="@+id/loginEmailText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="236dp"
+        android:layout_height="48dp"
         android:layout_marginTop="176dp"
         android:ems="10"
-        android:hint="Enter Codetantra email"
+        android:hint="@string/enterYourEmail"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
@@ -32,15 +32,17 @@
 
     <EditText
         android:id="@+id/loginPaswordText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="247dp"
+        android:layout_height="56dp"
         android:ems="10"
-        android:hint="Enter password"
+        android:hint="@string/enterYourPassword"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/loginButton"
+        app:layout_constraintBottom_toTopOf="@+id/loginLoginButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginEmailText" />
+        app:layout_constraintTop_toBottomOf="@+id/loginEmailText"
+        app:layout_constraintVertical_bias="0.504" />
 
     <Button
         android:id="@+id/loginAboutbutton"
