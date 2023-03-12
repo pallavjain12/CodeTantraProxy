@@ -3,9 +3,12 @@ package com.example.codetantraproxy.bean;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "user")
+
+@Entity(indices = {@Index(value = {"emailId"},
+        unique = true)}, tableName = "user")
 public class User {
 
     @PrimaryKey(autoGenerate = true)

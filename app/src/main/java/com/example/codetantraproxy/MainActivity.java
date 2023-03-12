@@ -28,15 +28,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (checkForLoginDetails("", "")) {
-            Intent home = new Intent(getApplicationContext(), HomeActivity.class);
-        }
-        loginAboutButton = (Button)findViewById(R.id.loginAboutbutton);
-        loginLoginButton = (Button)findViewById(R.id.loginLoginButton);
 
-        loginEmailEditText = (EditText)findViewById(R.id.loginEmailText);
-        loginPasswordEditText = (EditText)findViewById(R.id.loginPaswordText);
-        Toast.makeText(getApplicationContext(), "this is a toazxcst", new Integer(10)).show();
+        loginAboutButton = findViewById(R.id.loginAboutbutton);
+        loginLoginButton = findViewById(R.id.loginLoginButton);
+        loginEmailEditText = findViewById(R.id.loginEmailText);
+        loginPasswordEditText = findViewById(R.id.loginPaswordText);
+
+        if (checkForLoginDetails()) {
+            Intent home = new Intent(getApplicationContext(), HomeActivity.class);
+            startActivity(home);
+        }
 
         loginAboutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,28 +50,38 @@ public class MainActivity extends AppCompatActivity {
         loginLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loginCheck(loginEmailEditText.getText().toString(), loginPasswordEditText.getText().toString());
+                if (loginCheck(loginEmailEditText.getText().toString(), loginPasswordEditText.getText().toString())) {
+                    DatabaseHelper databaseHelper = DatabaseHelper.getDB(getApplicationContext());
+                    User user = new User(1, loginEmailEditText.getText().toString(), loginPasswordEditText.getText().toString());
+                    databaseHelper.userDao().addUser(user);
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }
 
-    public boolean checkForLoginDetails(String email, String password) {
+    public boolean checkForLoginDetails() {
         DatabaseHelper databaseHelper = DatabaseHelper.getDB(this);
-        User userList = databaseHelper.userDao().getLoginUser();
-        if (userList == null) {
-            Log.d("msg", "did not find any user");
+        User user = databaseHelper.userDao().getLoginUser();
+        Log.d("user null?", String.valueOf(user.getId()));
+        if (user == null) {
+            return false;
         }
-
-        User user = new User(email, password);
-        databaseHelper.userDao().addUser(user);
-        Log.d("msg", "inserted data");
-        return true;
+        if (loginCheck(user.getEmailId(), user.getPassword())) {
+            return true;
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Password changed. Please login again", new Integer(5)).show();
+            return false;
+        }
     }
 
     public boolean loginCheck(String email, String password) {
-        Log.d("email", email);
-        Log.d("password", password);
-        checkForLoginDetails(email, password);
-        return false;
+        /* checkwithapiIfsuccessfull(email, password)
+           return true or false accordingly
+         */
+        Log.d("check", "returning true condition");
+        return true;
     }
 }
