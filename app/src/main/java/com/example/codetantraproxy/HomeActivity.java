@@ -20,7 +20,8 @@ public class HomeActivity extends AppCompatActivity {
         addEmailPassword = findViewById(R.id.addEmailPasswordButton);
         markYourAttendance = findViewById(R.id.markYourButton);
         markOtherAttendance = findViewById(R.id.markOtherButton);
-
+        String email =  getIntent().getStringExtra("email");
+        String password = getIntent().getStringExtra("password");
         addEmailPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -33,6 +34,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), selectMeeting.class);
+                intent.putExtra("email", email);
+                intent.putExtra("password", password);
                 startActivity(intent);
             }
         });

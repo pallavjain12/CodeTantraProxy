@@ -1,5 +1,10 @@
 package com.example.codetantraproxy;
 
+import static com.example.codetantraproxy.Helper.Methods.checkForLoginDetails;
+import static com.example.codetantraproxy.Helper.Methods.loginCheck;
+import static com.example.codetantraproxy.Helper.Methods.updateFirstUser;
+import static com.example.codetantraproxy.Helper.apis.checkCredentials;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,13 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.codetantraproxy.Helper.DatabaseHelper;
-
-import java.io.File;
-import java.util.List;
-
-import com.example.codetantraproxy.Dao.UserDao;
 import com.example.codetantraproxy.bean.User;
-
 public class MainActivity extends AppCompatActivity {
     Button loginAboutButton;
     Button loginLoginButton;
@@ -34,11 +33,27 @@ public class MainActivity extends AppCompatActivity {
         loginEmailEditText = findViewById(R.id.loginEmailText);
         loginPasswordEditText = findViewById(R.id.loginPaswordText);
 
-        if (checkForLoginDetails()) {
+
+        /*
+            Check in database if there is a user with id 1
+            If found, check if login credentials are still correct.
+                If credentials are found correct, user will be redirected to next home page.
+                If credentials are found incorrect, a toast will appear saying login password may have changed. Please try again later.
+            If not found, take user input.
+         */
+        User user = checkForLoginDetails(getApplicationContext());
+        if (user != null) {
             Intent home = new Intent(getApplicationContext(), HomeActivity.class);
+            home.putExtra("email", user.getEmailId());
+            home.putExtra("password", user.getPassword());
             startActivity(home);
         }
 
+
+        /*
+            About Button on Login page.
+            It will redirect user to About activity.
+         */
         loginAboutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,41 +62,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        /*
+            Login Button on login page
+            Check if credentials are valid.
+            If found valid store user in db with id 1 and continue to home activity.
+            If found invalid message will appear that password incorrect.
+         */
         loginLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (loginCheck(loginEmailEditText.getText().toString(), loginPasswordEditText.getText().toString())) {
-                    DatabaseHelper databaseHelper = DatabaseHelper.getDB(getApplicationContext());
-                    User user = new User(1, loginEmailEditText.getText().toString(), loginPasswordEditText.getText().toString());
-                    databaseHelper.userDao().addUser(user);
+                String  email = loginEmailEditText.getText().toString();
+                String password = loginPasswordEditText.getText().toString();
+                if (loginCheck(email, password)) {
+                    updateFirstUser(getApplicationContext(), email, password);
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    intent.putExtra("email", email);
+                    intent.putExtra("password", password);
                     startActivity(intent);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Incorrect userid or password", new Integer(3));
+                    loginPasswordEditText.setText("");
                 }
             }
         });
-    }
-
-    public boolean checkForLoginDetails() {
-        DatabaseHelper databaseHelper = DatabaseHelper.getDB(this);
-        User user = databaseHelper.userDao().getLoginUser();
-        Log.d("user null?", String.valueOf(user.getId()));
-        if (user == null) {
-            return false;
-        }
-        if (loginCheck(user.getEmailId(), user.getPassword())) {
-            return true;
-        }
-        else {
-            Toast.makeText(getApplicationContext(), "Password changed. Please login again", new Integer(5)).show();
-            return false;
-        }
-    }
-
-    public boolean loginCheck(String email, String password) {
-        /* checkwithapiIfsuccessfull(email, password)
-           return true or false accordingly
-         */
-        Log.d("check", "returning true condition");
-        return true;
     }
 }
