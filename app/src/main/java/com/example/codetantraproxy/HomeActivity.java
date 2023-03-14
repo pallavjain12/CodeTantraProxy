@@ -17,6 +17,7 @@ public class HomeActivity extends AppCompatActivity {
     Button addEmailPassword;
     Button markYourAttendance;
     Button markOtherAttendance;
+    Button homeAboutButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,8 +26,19 @@ public class HomeActivity extends AppCompatActivity {
         addEmailPassword = findViewById(R.id.addEmailPasswordButton);
         markYourAttendance = findViewById(R.id.markYourButton);
         markOtherAttendance = findViewById(R.id.markOtherButton);
+        homeAboutButton = findViewById(R.id.homeAboutButton);
+
         String email =  getIntent().getStringExtra("email");
         String password = getIntent().getStringExtra("password");
+
+        homeAboutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), LoginAboutActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         /*
             Call AddEmailPassword activity to add new user.

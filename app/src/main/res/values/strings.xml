@@ -1,8 +1,12 @@
 <resources>
     <string name="app_name">CodeTantraProxy</string>
     <string name="loginAboutMessage">This app will mark multiple student\'s attendance with single OTP, without having to login multiple times.</string>
-    <string name="loginAboutGithub">Facing some issue, please create a ticket and we can look into it. Do explore this project, maybe you could resolve some issues.</string>
-    <string name="loginAboutLetsConnect">My social media accounts, Let\'s connect</string>
+    <string name="loginAboutGithub">Facing some issue, please submit an issue and we can resolve it.</string>
+    <string name="loginAboutLetsConnect">Let\'s connect</string>
+    <string name="raiseIssue">Report here</string>
+    <string name="linkedIn">LinkedIn</string>
+    <string name="email">Email</string>
+    <string name="instagram">Instagram</string>
     <string name="loginToCodetantra">Login to Code Tantra</string>
     <string name="enterYourEmail">Enter your email address</string>
     <string name="enterYourPassword">Enter your password</string>
@@ -12,4 +16,5 @@
     <string name="otherEmail">Use this when you are not enrolled for a class but want to mark friend\'s attendance who is enrolled. Will fetch meetings from their account.</string>
     <string name="remainingStudents">Remaining Students</string>
     <string name="markedStudents">Marked Students</string>
+    <string name="deleteSelected">Deleted Selected Accounts</string>
 </resources>

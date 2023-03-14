@@ -6,6 +6,7 @@ import static com.example.codetantraproxy.Helper.apis.getUserCookies;
 import static com.example.codetantraproxy.Helper.apis.submitOtp;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -14,20 +15,13 @@ import com.example.codetantraproxy.bean.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
 public class Methods {
     public static boolean loginCheck(String email, String password) {
-        Log.d("logincheck", email + " " + password);
-        if (checkCredentials(email, password)) {
-            Log.d("loginChecl", "ture");
-            return true;
-        }
-        else {
-            Log.d("logincheck", "false");
-            return false;
-        }
+        return checkCredentials(email, password);
     }
 
     public static void updateFirstUser(Context context, String email, String password) {
@@ -42,14 +36,14 @@ public class Methods {
         User user = databaseHelper.userDao().getLoginUser();
         if (user == null) {
             Log.d("msg","user empty in checkforLogindetails");
-            return user;
+            return null;
         }
         Log.d("user null?", String.valueOf(user.getId()));
         if (checkCredentials(user.getEmailId(), user.getPassword())) {
             return user;
         }
         else {
-            Toast.makeText(context, "Password changed. Please login again", new Integer(5)).show();
+            Toast.makeText(context, "Password changed. Please login again", Toast.LENGTH_LONG).show();
             return null;
         }
     }
@@ -64,6 +58,7 @@ public class Methods {
                 ans.put(meetingObj.get("title").toString(), meetingObj.get("_id").toString());
             }
             catch (Exception e) {
+                return new HashMap<>();
             }
         }
         return ans;
@@ -80,7 +75,6 @@ public class Methods {
         return map;
     }
 
-    static int t = 0;
     public static boolean markAttendence(String cookie, String otp, String mid) {
         String response = submitOtp(cookie, otp, mid);
         if (response.equals("invalid")) return false;
@@ -90,15 +84,53 @@ public class Methods {
             if (responseObj.get("msg") != null && responseObj.get("msg").equals("Invalid OTP")) {
                 return false;
             }
-            else if (responseObj.get("msg") != null && responseObj.get("msg").equals("Successfull")) {
-                return true;
-            }
-            else {
-                return false;
-            }
+            else return responseObj.get("msg") != null && responseObj.get("msg").equals("Successfull");
         }
         catch (Exception e) {
             return  false;
+        }
+    }
+
+    public static HashMap<String, String> fetchAllUsers(Context context) {
+        DatabaseHelper databaseHelper = DatabaseHelper.getDB(context);
+        List<User> list = databaseHelper.userDao().getAllUsers();
+        HashMap<String, String> map = new HashMap<>();
+        for (User u : list) {
+            map.put(u.getEmailId(), u.getPassword());
+        }
+        return map;
+    }
+
+    public static HashMap<Integer, String> fetchAllUserWithId(Context context) {
+        HashMap<Integer, String> map = new HashMap<>();
+        DatabaseHelper databaseHelper = DatabaseHelper.getDB(context);
+
+        List<User> list = databaseHelper.userDao().getAllUsers();
+        for (User u : list) {
+            map.put(u.getId(), u.getEmailId());
+        }
+        return map;
+    }
+
+    public static boolean deleteFromDB(Context context, int id) {
+        DatabaseHelper databaseHelper = DatabaseHelper.getDB(context);
+        try {
+            databaseHelper.userDao().deleteUser(new User(id, "",""));
+            return  true;
+        }
+        catch(Exception e) {
+            return false;
+        }
+    }
+
+    public static String makeURLSafe(String str) {
+        try {
+            String temp = URLEncoder.encode(str, "utf-8");
+            Log.d("encoded = ", temp);
+            return temp;
+        }
+        catch(Exception e) {
+            return  "";
         }
     }
 }

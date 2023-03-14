@@ -82,7 +82,7 @@ public class enterOTP extends AppCompatActivity {
                 remainingStudentsScrollView.removeAllViews();
                 remainingStudentsLayout = new LinearLayout(getApplicationContext());
                 remainingStudentsScrollView.addView(remainingStudentsLayout);
-                Log.d(" after sending otp size of selected studnets", "" + selectedStudents.size());
+                remainingStudentsLayout.setOrientation(LinearLayout.VERTICAL);
                 for (Map.Entry<String, String> em : selectedStudents.entrySet()) {
                     TextView temp = new TextView(getApplicationContext());
                     temp.setText(em.getKey());
@@ -90,7 +90,8 @@ public class enterOTP extends AppCompatActivity {
                 }
                 remainingStudents.setText("Count : " + selectedStudents.size());
                 markedStudents.setText("Count : " + (total - selectedStudents.size()));
-                Toast.makeText(getApplicationContext(), "Operation Completed", new Integer(5));
+                otpField.setText("");
+                Toast.makeText(getApplicationContext(), "Operation Completed", Toast.LENGTH_LONG).show();
             }
         });
     }
