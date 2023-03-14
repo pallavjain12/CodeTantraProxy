@@ -2,6 +2,8 @@ package com.example.codetantraproxy.Helper;
 
 import static com.example.codetantraproxy.Helper.apis.checkCredentials;
 import static com.example.codetantraproxy.Helper.apis.getMeetings;
+import static com.example.codetantraproxy.Helper.apis.getUserCookies;
+import static com.example.codetantraproxy.Helper.apis.submitOtp;
 
 import android.content.Context;
 import android.util.Log;
@@ -13,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class Methods {
     public static boolean loginCheck(String email, String password) {
@@ -66,8 +69,36 @@ public class Methods {
         return ans;
     }
 
-    public static String getUserCookie(String email, String password) {
+    public static HashMap<String, String> fetchUsersCookies(Context context) {
+        DatabaseHelper databaseHelper = DatabaseHelper.getDB(context);
+        List<User> list = databaseHelper.userDao().getAllUsers();
+        HashMap<String, String> map = new HashMap<>();
+        for (int i = 0; i < list.size(); i++) {
+            User temp = list.get(i);
+            map.put(temp.getEmailId(), getUserCookies(temp.getEmailId(), temp.getPassword()));
+        }
+        return map;
+    }
 
-        return "";
+    static int t = 0;
+    public static boolean markAttendence(String cookie, String otp, String mid) {
+        String response = submitOtp(cookie, otp, mid);
+        if (response.equals("invalid")) return false;
+
+        try {
+            JSONObject responseObj = new JSONObject(response);
+            if (responseObj.get("msg") != null && responseObj.get("msg").equals("Invalid OTP")) {
+                return false;
+            }
+            else if (responseObj.get("msg") != null && responseObj.get("msg").equals("Successfull")) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        catch (Exception e) {
+            return  false;
+        }
     }
 }

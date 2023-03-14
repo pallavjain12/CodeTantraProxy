@@ -1,7 +1,11 @@
 package com.example.codetantraproxy.Helper;
 
+import static com.example.codetantraproxy.Helper.ApiHelper.todaysEpochTIme;
+import static com.example.codetantraproxy.Helper.ApiHelper.tomorrowsEpochTime;
+
 import android.os.StrictMode;
 import android.util.Log;
+import android.widget.EditText;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,6 +13,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
+import java.security.spec.ECField;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,7 +25,7 @@ import okhttp3.Response;
 
 
 public class apis {
-        public static String getUserCookies(String email, String password) throws IOException, JSONException {
+        public static String getUserCookies(String email, String password) {
             OkHttpClient client = new OkHttpClient();
             String mediaTypeString = "{\"loginId\":\""+ email + "\",\"password\":\""+ password +"\",\"_ct_blip\":\"\"}";
             MediaType mediaType = MediaType.parse("application/json");
@@ -35,11 +40,18 @@ public class apis {
                     .addHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36")
                     .addHeader("Host", "iiitb.codetantra.com")
                     .build();
-            Response response = client.newCall(request).execute();
-            String bodyy = response.body().string();
-            JSONObject responseStatus = new JSONObject(bodyy);
-            if (!responseStatus.get("result").equals("0")) {
-                return "invalid";
+            Response response;
+            try {
+                response = client.newCall(request).execute();
+                String bodyy = response.body().string();
+                JSONObject responseStatus = new JSONObject(bodyy);
+                if (!responseStatus.get("result").equals("0")) {
+                    return "invalid";
+                }
+
+            }
+            catch(Exception e) {
+                return "";
             }
             List<String> cookies = response.headers().values("Set-Cookie");
             String returnans = "";
@@ -50,8 +62,8 @@ public class apis {
         }
 
         public static JSONArray getMeetings(String cookies) {
-            String startDateEPOCH = "";
-            String endDateEPOCH = "";
+            String startDateEPOCH = todaysEpochTIme();
+            String endDateEPOCH = tomorrowsEpochTime();
 
 
             OkHttpClient client = new OkHttpClient().newBuilder().build();
@@ -74,6 +86,7 @@ public class apis {
             try {
                 Response response = client.newCall(request).execute();
                 JSONObject responseObj = new JSONObject(response.body().string());
+                Log.d("meetings", responseObj.toString());
                 JSONArray meetingsArray = new JSONArray(responseObj.get("ref").toString());
                 return meetingsArray;
             }
@@ -83,7 +96,6 @@ public class apis {
         }
         public static boolean checkCredentials(String email, String password) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
             StrictMode.setThreadPolicy(policy);
             try {
                 if (getUserCookies(email, password).equals("invalid")) {
@@ -96,6 +108,37 @@ public class apis {
             catch (Exception e) {
                 Log.d("cheeckCredential", "code pahata" + e);
                 return false;
+            }
+        }
+
+        public static String submitOtp (String cookie, String otp, String mid) {
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            MediaType mediaType = MediaType.parse("application/json");
+            RequestBody body = RequestBody.create(mediaType, "{\"code\":\"" + otp + "\",\"mid\":\"" + mid + "\"}");
+            Request request = new Request.Builder()
+                    .url("https://iiitb.codetantra.com/secure/rest/dd/muap")
+                    .method("POST", body)
+                    .addHeader("Accept", "application/json")
+                    .addHeader("Content-Length", "62")
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Host", "iiitb.codetantra.com")
+                    .addHeader("sec-ch-ua", "\"Chromium\";v=\"104\", \" Not A;Brand\";v=\"99\", \"Google Chrome\";v=\"104\"")
+                    .addHeader("sec-ch-ua-mobile", "?1")
+                    .addHeader("sec-ca-ua-platform", "\"Android\"")
+                    .addHeader("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Mobile Safari/537.36")
+                    .addHeader("X-Requested-With", "XMLHttpRequest")
+                    .addHeader("Origin", "htps://iiitb.codetantra.com")
+                    .addHeader("Sec-Fetch-Mode", "cors")
+                    .addHeader("X-Requested-With", "XMLHttpRequest")
+                    .addHeader("Cookie", cookie)
+                    .build();
+            try {
+                Response response = client.newCall(request).execute();
+                return response.body().string();
+            }
+            catch(Exception e) {
+                return "invalid";
             }
         }
 }

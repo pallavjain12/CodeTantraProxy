@@ -14,7 +14,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.304" />
+        app:layout_constraintVertical_bias="0.217">
+
+    </RadioGroup>
 
     <TextView
         android:id="@+id/textView6"
@@ -27,21 +29,21 @@
         app:layout_constraintHorizontal_bias="0.166"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.312" />
+        app:layout_constraintVertical_bias="0.431" />
 
     <TextView
         android:id="@+id/noMeetingsFoundBox"
-        android:layout_width="355dp"
-        android:layout_height="51dp"
+        android:layout_width="295dp"
+        android:layout_height="47dp"
         android:text="No Meetings Found"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/radioGroup"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.785"
+        app:layout_constraintHorizontal_bias="0.352"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:layout_constraintVertical_bias="0.359" />
+        app:layout_constraintVertical_bias="0.483" />
 
     <Button
         android:id="@+id/otpButton"
@@ -51,8 +53,26 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.435"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radioGroup"
-        app:layout_constraintVertical_bias="0.9" />
+        app:layout_constraintVertical_bias="0.964" />
+
+    <ScrollView
+        android:id="@+id/checkBoxContainer"
+        android:layout_width="409dp"
+        android:layout_height="410dp"
+        android:contentDescription="Select Students"
+        app:layout_constraintBottom_toTopOf="@+id/otpButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutInsideCheckBoxContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="selectedStudents"
+            android:orientation="vertical" />
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

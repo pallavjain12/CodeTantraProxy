@@ -10,4 +10,6 @@
     <string name="unableToLogin">Unable To Login.\n Wrong email or password</string>
     <string name="yourEmail">Use this when you want to fetch meetings from your account</string>
     <string name="otherEmail">Use this when you are not enrolled for a class but want to mark friend\'s attendance who is enrolled. Will fetch meetings from their account.</string>
+    <string name="remainingStudents">Remaining Students</string>
+    <string name="markedStudents">Marked Students</string>
 </resources>
