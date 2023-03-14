@@ -1,11 +1,14 @@
 package com.example.codetantraproxy;
 
+import static com.example.codetantraproxy.Helper.Methods.getUserCookie;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -22,6 +25,11 @@ public class HomeActivity extends AppCompatActivity {
         markOtherAttendance = findViewById(R.id.markOtherButton);
         String email =  getIntent().getStringExtra("email");
         String password = getIntent().getStringExtra("password");
+
+        /*
+            Call AddEmailPassword activity to add new user.
+            Later to add delete functionality
+         */
         addEmailPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -33,10 +41,15 @@ public class HomeActivity extends AppCompatActivity {
         markYourAttendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), selectMeeting.class);
-                intent.putExtra("email", email);
-                intent.putExtra("password", password);
-                startActivity(intent);
+                String cookies = getUserCookie(email, password);
+                if (cookies.equals("invalid")) {
+                    Toast.makeText(getApplicationContext(), "Password changed or invalid password", new Integer(5));
+                }
+                else {
+                    Intent intent = new Intent(getApplicationContext(), selectMeeting.class);
+                    intent.putExtra("cookies", cookies);
+                    startActivity(intent);
+                }
             }
         });
 

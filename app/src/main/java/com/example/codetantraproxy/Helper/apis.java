@@ -1,5 +1,9 @@
 package com.example.codetantraproxy.Helper;
 
+import android.os.StrictMode;
+import android.util.Log;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,23 +36,20 @@ public class apis {
                     .addHeader("Host", "iiitb.codetantra.com")
                     .build();
             Response response = client.newCall(request).execute();
-
-            JSONObject responseStatus = new JSONObject(response.body().string());
+            String bodyy = response.body().string();
+            JSONObject responseStatus = new JSONObject(bodyy);
             if (!responseStatus.get("result").equals("0")) {
                 return "invalid";
             }
-
             List<String> cookies = response.headers().values("Set-Cookie");
             String returnans = "";
             for (String s : cookies) {
                 returnans += (s.split(";")[0]  + "; ");
             }
-            System.out.println( returnans );
             return returnans;
         }
 
-        public static HashMap<String, String> getMeetings(String cookies) throws IOException {
-            HashMap<String, String> map = new HashMap<String, String>();
+        public static JSONArray getMeetings(String cookies) {
             String startDateEPOCH = "";
             String endDateEPOCH = "";
 
@@ -70,15 +71,30 @@ public class apis {
                     .addHeader("Referer", "https://iiitb.codetantra.com/secure/tla/m.jsp")
                     .addHeader("Cookie", cookies)
                     .build();
-            Response response = client.newCall(request).execute();
-            return map;
+            try {
+                Response response = client.newCall(request).execute();
+                JSONObject responseObj = new JSONObject(response.body().string());
+                JSONArray meetingsArray = new JSONArray(responseObj.get("ref").toString());
+                return meetingsArray;
+            }
+            catch (Exception e) {
+                return null;
+            }
         }
         public static boolean checkCredentials(String email, String password) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+            StrictMode.setThreadPolicy(policy);
             try {
-                if (getUserCookies(email, password).equals("invalid"))  return false;
+                if (getUserCookies(email, password).equals("invalid")) {
+                    Log.d("checkCredentials", "false");
+                    return false;
+                }
+                Log.d("checkCredentials", "true");
                 return true;
             }
             catch (Exception e) {
+                Log.d("cheeckCredential", "code pahata" + e);
                 return false;
             }
         }

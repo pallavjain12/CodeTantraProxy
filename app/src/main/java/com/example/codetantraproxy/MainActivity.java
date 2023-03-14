@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String  email = loginEmailEditText.getText().toString();
                 String password = loginPasswordEditText.getText().toString();
+                Log.d("email + password", email + " " + password);
                 if (loginCheck(email, password)) {
                     updateFirstUser(getApplicationContext(), email, password);
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);

@@ -1,5 +1,7 @@
 package com.example.codetantraproxy;
 
+import static com.example.codetantraproxy.Helper.apis.checkCredentials;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -33,10 +35,16 @@ public class AddEmailPassword extends AppCompatActivity {
                 String password = passwordEditText.getText().toString();
                 // password = Helper.convertToURLSafe(password);
 
-                if (ableToLogin(email, password)) {
-                    Toast.makeText(getApplicationContext(), "User added successfully", new Integer(5)).show();
-                    DatabaseHelper databaseHelper = DatabaseHelper.getDB(getApplicationContext());
-                    databaseHelper.userDao().addUser(new User(email, password));
+                if (checkCredentials(email, password)) {
+                    Toast.makeText(getApplicationContext(), "Credentials verified successfully", new Integer(5)).show();
+                    try {
+                        DatabaseHelper databaseHelper = DatabaseHelper.getDB(getApplicationContext());
+                        databaseHelper.userDao().addUser(new User(email, password));
+                        Toast.makeText(getApplicationContext(), "User added successfully", new Integer(5));
+                    }
+                    catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "Error occured while adding user. Please try again later", new Integer(5));
+                    }
                     emailEditText.setText("");
                     passwordEditText.setText("");
                 }
@@ -45,11 +53,5 @@ public class AddEmailPassword extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    public boolean ableToLogin(String email, String password){
-        if (email.length() == 0 || password.length() == 0)  return false;
-        // api call to check login status
-        return true;
     }
 }
