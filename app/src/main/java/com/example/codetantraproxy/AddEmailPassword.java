@@ -103,13 +103,12 @@ public class AddEmailPassword extends AppCompatActivity {
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
                 password = convertToURLSafe(password);
-                Log.d("converted password = " , password);
                 if (checkCredentials(email, password)) {
-                    Toast.makeText(getApplicationContext(), "Credentials verified successfully", new Integer(5)).show();
+                    Toast.makeText(getApplicationContext(), "Credentials verified successfully", Toast.LENGTH_LONG).show();
                     try {
                         DatabaseHelper databaseHelper = DatabaseHelper.getDB(getApplicationContext());
                         databaseHelper.userDao().addUser(new User(email, password));
-                        Toast.makeText(getApplicationContext(), "User added successfully", new Integer(5));
+                        Toast.makeText(getApplicationContext(), "User added successfully", Toast.LENGTH_LONG);
                     }
                     catch (Exception e) {
                         Toast.makeText(getApplicationContext(), "Error occured while adding user. Please try again later", new Integer(5));
@@ -118,7 +117,7 @@ public class AddEmailPassword extends AppCompatActivity {
                     passwordEditText.setText("");
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), "Incorrect email or password", new Integer(5)).show();
+                    Toast.makeText(getApplicationContext(), "Incorrect email or password", Toast.LENGTH_LONG).show();
                 }
                 finish();
                 startActivity(getIntent());
