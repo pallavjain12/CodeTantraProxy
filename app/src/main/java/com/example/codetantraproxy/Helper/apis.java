@@ -5,18 +5,9 @@ import static com.example.codetantraproxy.Helper.ApiHelper.tomorrowsEpochTime;
 
 import android.os.StrictMode;
 import android.util.Log;
-import android.widget.EditText;
-
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.URL;
-import java.security.spec.ECField;
-import java.util.HashMap;
 import java.util.List;
-
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -43,6 +34,7 @@ public class apis {
             Response response;
             try {
                 response = client.newCall(request).execute();
+                assert response.body() != null;
                 String bodyy = response.body().string();
                 JSONObject responseStatus = new JSONObject(bodyy);
                 if (!responseStatus.get("result").equals("0")) {
@@ -54,11 +46,11 @@ public class apis {
                 return "";
             }
             List<String> cookies = response.headers().values("Set-Cookie");
-            String returnans = "";
+            StringBuilder returnans = new StringBuilder();
             for (String s : cookies) {
-                returnans += (s.split(";")[0]  + "; ");
+                returnans.append(s.split(";")[0]).append("; ");
             }
-            return returnans;
+            return returnans.toString();
         }
 
         public static JSONArray getMeetings(String cookies) {
@@ -85,10 +77,10 @@ public class apis {
                     .build();
             try {
                 Response response = client.newCall(request).execute();
+                assert response.body() != null;
                 JSONObject responseObj = new JSONObject(response.body().string());
                 Log.d("meetings", responseObj.toString());
-                JSONArray meetingsArray = new JSONArray(responseObj.get("ref").toString());
-                return meetingsArray;
+                return new JSONArray(responseObj.get("ref").toString());
             }
             catch (Exception e) {
                 return null;
@@ -135,6 +127,7 @@ public class apis {
                     .build();
             try {
                 Response response = client.newCall(request).execute();
+                assert response.body() != null;
                 return response.body().string();
             }
             catch(Exception e) {

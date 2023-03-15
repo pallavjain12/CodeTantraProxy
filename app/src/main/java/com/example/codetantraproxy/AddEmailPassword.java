@@ -67,6 +67,14 @@ public class AddEmailPassword extends AppCompatActivity {
             });
         }
 
+        /*
+            |--------------------------------------------------------------------------------------------------------------|
+            | Here everytime a user is added, activity is reloaded which results in db access. Waste of cpu time and power.|
+            | Update scroll view to delete particular user instead of reloading the activity just reload the scroll view,  |
+            | limiting the db access and less waste of cpu time.                                                           |
+            |--------------------------------------------------------------------------------------------------------------|
+         */
+
         btnDeleteAccounts.setOnClickListener(view -> {
             for (int i : idsToRemove) {
                 if (i == 1) continue;
@@ -75,15 +83,21 @@ public class AddEmailPassword extends AppCompatActivity {
                     chbx.setId(i);
                     linearLayoutStudents.removeView(chbx);
                     Toast.makeText(getApplicationContext(), "Deleted Successfully", Toast.LENGTH_LONG).show();
+                    finish();
+                    startActivity(getIntent());
                 }
                 else {
                     Toast.makeText(getApplicationContext(), "Error deleting", Toast.LENGTH_LONG).show();
                 }
             }
-            finish();
-            startActivity(getIntent());
         });
 
+        /*
+            |--------------------------------------------------------------------------------------------------------------|
+            | Here everytime a user is added, activity is reloaded which result in db access. Waste of cpu time and power. |
+            | Update scroll view after adding user in db. Same as delete button.                                           |
+            |--------------------------------------------------------------------------------------------------------------|
+         */
         addUserButton.setOnClickListener(view -> {
             String email = emailEditText.getText().toString();
             String password = passwordEditText.getText().toString();
@@ -98,14 +112,13 @@ public class AddEmailPassword extends AppCompatActivity {
                 catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "Error occured while adding user. Please try again later", Toast.LENGTH_LONG).show();
                 }
-                emailEditText.setText("");
-                passwordEditText.setText("");
+                finish();
+                startActivity(getIntent());
             }
             else {
                 Toast.makeText(getApplicationContext(), "Incorrect email or password", Toast.LENGTH_LONG).show();
+                emailEditText.setText("");
             }
-            finish();
-            startActivity(getIntent());
         });
     }
 }

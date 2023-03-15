@@ -38,6 +38,12 @@ public class selectMeeting extends AppCompatActivity {
         scrollView = findViewById(R.id.checkBoxContainer);
         container = findViewById(R.id.linearLayoutInsideCheckBoxContainer);
 
+        /*
+            |--------------------------------------------------------------------------------------------------------------|
+            | Change current way of retrieving cookie, by calling api calls on different thread than main UI thread and    |
+            | making async calls for all request, clubbing all the data together and giving back here                      |
+            |--------------------------------------------------------------------------------------------------------------|
+         */
         String meetingsFetchCookies = getIntent().getStringExtra("cookies");
         Map<String, String> mapMeetings = fetchMeetings(meetingsFetchCookies);
         HashMap<String, String> selectedStudents = new HashMap<>();

@@ -44,8 +44,8 @@ public class enterOTP extends AppCompatActivity {
         selectedStudents = (HashMap<String, String>) getIntent().getSerializableExtra("selectedstudentsMap");
         String mid = getIntent().getStringExtra("mid");
         total = selectedStudents.size();
-        remainingStudents.setText("Count : " + selectedStudents.size());
-        markedStudents.setText("Count : " + (total - selectedStudents.size()));
+        remainingStudents.setText(getResources().getString(R.string.count, selectedStudents.size()));
+        markedStudents.setText(getResources().getString(R.string.count, total - selectedStudents.size()));
 
         for (Map.Entry<String, String> em : selectedStudents.entrySet()) {
             TextView temp = new TextView(getApplicationContext());
@@ -53,6 +53,14 @@ public class enterOTP extends AppCompatActivity {
             remainingStudentsLayout.addView(temp);
         }
 
+        /*
+            |--------------------------------------------------------------------------------------------------------------|
+            | Instead of sending request on main UI thread, create a new thread and send async simultaneous request without|
+            | waiting for previous result and update scroll views accordingly. Same thing has to be applied while fetching |
+            | all users cookie. Instead of iterating through all the users everytime for a otp, just check for the updated |
+            | status of users.                                                                                             |
+            |--------------------------------------------------------------------------------------------------------------|
+         */
         submitOtp.setOnClickListener(view -> {
             String otp = otpField.getText().toString();
             ArrayList<String> tempList = new ArrayList<>();
@@ -81,8 +89,8 @@ public class enterOTP extends AppCompatActivity {
                 temp.setText(em.getKey());
                 remainingStudentsLayout.addView(temp);
             }
-            remainingStudents.setText("Count : " + selectedStudents.size());
-            markedStudents.setText("Count : " + (total - selectedStudents.size()));
+            remainingStudents.setText(getResources().getString(R.string.count, selectedStudents.size()));
+            markedStudents.setText(getResources().getString(R.string.count, total - selectedStudents.size()));
             otpField.setText("");
             Toast.makeText(getApplicationContext(), "Operation Completed", Toast.LENGTH_LONG).show();
         });

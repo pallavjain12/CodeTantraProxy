@@ -17,4 +17,5 @@
     <string name="remainingStudents">Remaining Students</string>
     <string name="markedStudents">Marked Students</string>
     <string name="deleteSelected">Deleted Selected Accounts</string>
+    <string name="count">Count : %1$d</string>
 </resources>

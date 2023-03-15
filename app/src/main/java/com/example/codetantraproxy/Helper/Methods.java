@@ -6,16 +6,11 @@ import static com.example.codetantraproxy.Helper.apis.getUserCookies;
 import static com.example.codetantraproxy.Helper.apis.submitOtp;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
-
 import com.example.codetantraproxy.bean.User;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -121,17 +116,6 @@ public class Methods {
         }
         catch(Exception e) {
             return false;
-        }
-    }
-
-    public static String makeURLSafe(String str) {
-        try {
-            String temp = URLEncoder.encode(str, "utf-8");
-            Log.d("encoded = ", temp);
-            return temp;
-        }
-        catch(Exception e) {
-            return  "";
         }
     }
 }

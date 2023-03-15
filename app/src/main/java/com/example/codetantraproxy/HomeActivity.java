@@ -43,7 +43,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         /*
-            Call selectMeetingActivity with cookies in intent.
+            Retrieve id=1 user cookie and send it to next activity for fetching meeings details
          */
         markYourAttendance.setOnClickListener(view -> {
             String cookies = getUserCookies(email, password);
@@ -57,6 +57,9 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        /*
+            Display list of all users to select from for retrieving meeting from other account.
+         */
         markOtherAttendance.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), SelecOtherAccount.class);
             startActivity(intent);

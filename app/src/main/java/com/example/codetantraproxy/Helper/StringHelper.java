@@ -3,7 +3,7 @@ package com.example.codetantraproxy.Helper;
 import java.util.HashMap;
 
 public class StringHelper {
-    static final HashMap<Character, String> map = new HashMap<Character, String>();
+    static final HashMap<Character, String> map = new HashMap<>();
     public static String convertToURLSafe(String str) {
         StringBuilder sbr = new StringBuilder();
         map.put('@', "%40");
