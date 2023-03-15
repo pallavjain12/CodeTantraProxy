@@ -11,7 +11,7 @@ import android.widget.Button;
 public class LoginAboutActivity extends AppCompatActivity {
 
     static final String LINKEDIN = "https://www.linkedin.com/in/pallavjain12/";
-    static final String GITHUB_ISSUE = "https://github.com/pallavjain12/asdf/issues/new";
+    static final String GITHUB_ISSUE = "https://github.com/pallavjain12/CodeTantraProxy/issues/new";
     static final String EMAIL = "mailto:\"pallavjain12@gmail.com\"";
     Button btnReportGithub;
     Button btnLinkedIn;
