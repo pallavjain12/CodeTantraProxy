@@ -117,6 +117,7 @@ public class AddEmailPassword extends AppCompatActivity {
             }
             else {
                 Toast.makeText(getApplicationContext(), "Incorrect email or password", Toast.LENGTH_LONG).show();
+                passwordEditText.setText("");
                 emailEditText.setText("");
             }
         });
