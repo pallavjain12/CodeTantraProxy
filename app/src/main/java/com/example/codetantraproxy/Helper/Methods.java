@@ -77,6 +77,7 @@ public class Methods {
 
     public static boolean markAttendence(String cookie, String otp, String mid) {
         String response = submitOtp(cookie, otp, mid);
+        Log.d("response from codetantra",response);
         if (response.equals("invalid")) return false;
 
         try {

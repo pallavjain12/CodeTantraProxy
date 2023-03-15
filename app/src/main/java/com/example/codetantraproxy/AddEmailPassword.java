@@ -3,6 +3,7 @@ package com.example.codetantraproxy;
 import static com.example.codetantraproxy.Helper.Methods.deleteFromDB;
 import static com.example.codetantraproxy.Helper.Methods.fetchAllUserWithId;
 import static com.example.codetantraproxy.Helper.Methods.makeURLSafe;
+import static com.example.codetantraproxy.Helper.StringHelper.convertToURLSafe;
 import static com.example.codetantraproxy.Helper.apis.checkCredentials;
 import static com.example.codetantraproxy.Helper.apis.getUserCookies;
 
@@ -50,7 +51,7 @@ public class AddEmailPassword extends AppCompatActivity {
         btnDeleteAccounts = findViewById(R.id.btnDeleteAccounts);
         linearLayoutStudents = findViewById(R.id.studentsList);
 
-        HashMap<Integer, String> map = new HashMap<>();
+        HashMap<Integer, String> map;
         map = fetchAllUserWithId(getApplicationContext());
         if(map.size() == 1) {
             btnDeleteAccounts.setVisibility(View.GONE);
@@ -101,7 +102,8 @@ public class AddEmailPassword extends AppCompatActivity {
             public void onClick(View view) {
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-                password = makeURLSafe(password);
+                password = convertToURLSafe(password);
+                Log.d("converted password = " , password);
                 if (checkCredentials(email, password)) {
                     Toast.makeText(getApplicationContext(), "Credentials verified successfully", new Integer(5)).show();
                     try {

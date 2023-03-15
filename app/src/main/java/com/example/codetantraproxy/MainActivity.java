@@ -4,6 +4,7 @@ import static com.example.codetantraproxy.Helper.Methods.checkForLoginDetails;
 import static com.example.codetantraproxy.Helper.Methods.loginCheck;
 import static com.example.codetantraproxy.Helper.Methods.makeURLSafe;
 import static com.example.codetantraproxy.Helper.Methods.updateFirstUser;
+import static com.example.codetantraproxy.Helper.StringHelper.convertToURLSafe;
 import static com.example.codetantraproxy.Helper.apis.checkCredentials;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String  email = loginEmailEditText.getText().toString();
                 String password = loginPasswordEditText.getText().toString();
-                password = makeURLSafe(password);
+                password = convertToURLSafe(password);
                 Log.d("email + password", email + " " + password);
                 if (loginCheck(email, password)) {
                     updateFirstUser(getApplicationContext(), email, password);

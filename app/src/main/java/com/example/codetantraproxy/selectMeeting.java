@@ -99,7 +99,7 @@ public class selectMeeting extends AppCompatActivity {
                 int selected = radioGroup.getCheckedRadioButtonId();
                 RadioButton rbtn = (RadioButton) findViewById(selected);
                 Intent intent = new Intent(getApplicationContext(), enterOTP.class);
-                intent.putExtra("meetingId", mapMeetings.get(rbtn.getText().toString()));
+                intent.putExtra("mid", mapMeetings.get(rbtn.getText().toString()));
                 intent.putExtra("selectedstudentsMap", selectedStudents);
                 startActivity(intent);
             }

@@ -47,7 +47,7 @@ public class enterOTP extends AppCompatActivity {
         selectedStudents = (HashMap<String, String>) getIntent().getSerializableExtra("selectedstudentsMap");
         String mid = getIntent().getStringExtra("mid");
         total = selectedStudents.size();
-
+        Log.d("mid", mid);
         remainingStudents.setText("Count : " + selectedStudents.size());
         markedStudents.setText("Count : " + (total - selectedStudents.size()));
 
