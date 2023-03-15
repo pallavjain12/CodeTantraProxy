@@ -2,15 +2,12 @@ package com.example.codetantraproxy;
 
 import static com.example.codetantraproxy.Helper.apis.getUserCookies;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.icu.text.LocaleDisplayNames;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -31,51 +28,38 @@ public class HomeActivity extends AppCompatActivity {
         String email =  getIntent().getStringExtra("email");
         String password = getIntent().getStringExtra("password");
 
-        homeAboutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), LoginAboutActivity.class);
-                startActivity(intent);
-            }
+        homeAboutButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), LoginAboutActivity.class);
+            startActivity(intent);
         });
 
 
         /*
             Call AddEmailPassword activity to add new user.
-            Later to add delete functionality
          */
-        addEmailPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AddEmailPassword.class);
+        addEmailPassword.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), AddEmailPassword.class);
+            startActivity(intent);
+        });
+
+        /*
+            Call selectMeetingActivity with cookies in intent.
+         */
+        markYourAttendance.setOnClickListener(view -> {
+            String cookies = getUserCookies(email, password);
+            if (cookies.equals("invalid")) {
+                Toast.makeText(getApplicationContext(), "Password changed or invalid password", Toast.LENGTH_LONG).show();
+            }
+            else {
+                Intent intent = new Intent(getApplicationContext(), selectMeeting.class);
+                intent.putExtra("cookies", cookies);
                 startActivity(intent);
             }
         });
 
-        markYourAttendance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("email", email);
-                Log.d("password", password);
-                String cookies = getUserCookies(email, password);
-                if (cookies.equals("invalid")) {
-                    Toast.makeText(getApplicationContext(), "Password changed or invalid password", new Integer(5));
-                }
-                else {
-                    Intent intent = new Intent(getApplicationContext(), selectMeeting.class);
-                    Log.d("cookies = ", cookies);
-                    intent.putExtra("cookies", cookies);
-                    startActivity(intent);
-                }
-            }
-        });
-
-        markOtherAttendance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SelecOtherAccount.class);
-                startActivity(intent);
-            }
+        markOtherAttendance.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), SelecOtherAccount.class);
+            startActivity(intent);
         });
     }
 }

@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.SplittableRandom;
 
 public class SelecOtherAccount extends AppCompatActivity {
 
@@ -32,7 +31,6 @@ public class SelecOtherAccount extends AppCompatActivity {
 
         for (Map.Entry<String, String> meeting : map.entrySet()) {
             String title = meeting.getKey();
-            String id = meeting.getValue();
             RadioButton rdbtn = new RadioButton(this);
             rdbtn.setId(View.generateViewId());
             rdbtn.setText(title);
@@ -40,22 +38,19 @@ public class SelecOtherAccount extends AppCompatActivity {
             showAccountsRadioGroup.check(rdbtn.getId());
         }
 
-        continueToSelectMeeting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), selectMeeting.class);
-                int selected = showAccountsRadioGroup.getCheckedRadioButtonId();
-                RadioButton rbtn = (RadioButton) findViewById(selected);
-                String email = rbtn.getText().toString();
-                String password = map.get(email);
-                String cookie = getUserCookies(email, password);
-                if (cookie.length() < 10)   {
-                    Toast.makeText(getApplicationContext(), "Password changed", new Integer( 5));
-                }
-                else {
-                    intent.putExtra("cookies", cookie);
-                    startActivity(intent);
-                }
+        continueToSelectMeeting.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), selectMeeting.class);
+            int selected = showAccountsRadioGroup.getCheckedRadioButtonId();
+            RadioButton rbtn = (RadioButton) findViewById(selected);
+            String email = rbtn.getText().toString();
+            String password = map.get(email);
+            String cookie = getUserCookies(email, password);
+            if (cookie.length() < 10)   {
+                Toast.makeText(getApplicationContext(), "Password changed", Toast.LENGTH_LONG).show();
+            }
+            else {
+                intent.putExtra("cookies", cookie);
+                startActivity(intent);
             }
         });
     }

@@ -5,8 +5,6 @@ import static com.example.codetantraproxy.Helper.Methods.markAttendence;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -23,7 +21,6 @@ public class enterOTP extends AppCompatActivity {
     Button submitOtp;
     EditText otpField;
     HashMap<String, String> selectedStudents;
-    ArrayList<String> list;
     TextView remainingStudents;
     TextView markedStudents;
     LinearLayout remainingStudentsLayout;
@@ -47,7 +44,6 @@ public class enterOTP extends AppCompatActivity {
         selectedStudents = (HashMap<String, String>) getIntent().getSerializableExtra("selectedstudentsMap");
         String mid = getIntent().getStringExtra("mid");
         total = selectedStudents.size();
-        Log.d("mid", mid);
         remainingStudents.setText("Count : " + selectedStudents.size());
         markedStudents.setText("Count : " + (total - selectedStudents.size()));
 
@@ -57,42 +53,38 @@ public class enterOTP extends AppCompatActivity {
             remainingStudentsLayout.addView(temp);
         }
 
-        submitOtp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String otp = otpField.getText().toString();
-                ArrayList<String> tempList = new ArrayList<>();
-                HashMap<String, String> tempHash = new HashMap<>();
-                tempHash.putAll(selectedStudents);
-                for (Map.Entry<String, String> em : tempHash.entrySet()) {
-                    String cookie = em.getValue();
-                    if (markAttendence(cookie, otp, mid)) {
-                        tempList.add(em.getKey());
-                        selectedStudents.remove(em.getKey());
-                    }
-                    else {
-                        break;
-                    }
+        submitOtp.setOnClickListener(view -> {
+            String otp = otpField.getText().toString();
+            ArrayList<String> tempList = new ArrayList<>();
+            HashMap<String, String> tempHash = new HashMap<>(selectedStudents);
+            for (Map.Entry<String, String> em : tempHash.entrySet()) {
+                String cookie = em.getValue();
+                if (markAttendence(cookie, otp, mid)) {
+                    tempList.add(em.getKey());
+                    selectedStudents.remove(em.getKey());
                 }
-                for (String s : tempList) {
-                    TextView temp = new TextView(getApplicationContext());
-                    temp.setText(s);
-                    markedStudentsLayout.addView(temp);
+                else {
+                    break;
                 }
-                remainingStudentsScrollView.removeAllViews();
-                remainingStudentsLayout = new LinearLayout(getApplicationContext());
-                remainingStudentsScrollView.addView(remainingStudentsLayout);
-                remainingStudentsLayout.setOrientation(LinearLayout.VERTICAL);
-                for (Map.Entry<String, String> em : selectedStudents.entrySet()) {
-                    TextView temp = new TextView(getApplicationContext());
-                    temp.setText(em.getKey());
-                    remainingStudentsLayout.addView(temp);
-                }
-                remainingStudents.setText("Count : " + selectedStudents.size());
-                markedStudents.setText("Count : " + (total - selectedStudents.size()));
-                otpField.setText("");
-                Toast.makeText(getApplicationContext(), "Operation Completed", Toast.LENGTH_LONG).show();
             }
+            for (String s : tempList) {
+                TextView temp = new TextView(getApplicationContext());
+                temp.setText(s);
+                markedStudentsLayout.addView(temp);
+            }
+            remainingStudentsScrollView.removeAllViews();
+            remainingStudentsLayout = new LinearLayout(getApplicationContext());
+            remainingStudentsScrollView.addView(remainingStudentsLayout);
+            remainingStudentsLayout.setOrientation(LinearLayout.VERTICAL);
+            for (Map.Entry<String, String> em : selectedStudents.entrySet()) {
+                TextView temp = new TextView(getApplicationContext());
+                temp.setText(em.getKey());
+                remainingStudentsLayout.addView(temp);
+            }
+            remainingStudents.setText("Count : " + selectedStudents.size());
+            markedStudents.setText("Count : " + (total - selectedStudents.size()));
+            otpField.setText("");
+            Toast.makeText(getApplicationContext(), "Operation Completed", Toast.LENGTH_LONG).show();
         });
     }
 }

@@ -1,12 +1,10 @@
 package com.example.codetantraproxy;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginAboutActivity extends AppCompatActivity {
 
@@ -26,31 +24,22 @@ public class LoginAboutActivity extends AppCompatActivity {
         btnLinkedIn = findViewById(R.id.btnLinkedIn);
         btnReportGithub = findViewById(R.id.btnReportGithub);
 
-        btnEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent httpIntent = new Intent(Intent.ACTION_VIEW);
-                httpIntent.setData(Uri.parse(EMAIL));
-                startActivity(httpIntent);
-            }
+        btnEmail.setOnClickListener(view -> {
+            Intent httpIntent = new Intent(Intent.ACTION_VIEW);
+            httpIntent.setData(Uri.parse(EMAIL));
+            startActivity(httpIntent);
         });
 
-        btnLinkedIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent httpIntent = new Intent(Intent.ACTION_VIEW);
-                httpIntent.setData(Uri.parse(LINKEDIN));
-                startActivity(httpIntent);
-            }
+        btnLinkedIn.setOnClickListener(view -> {
+            Intent httpIntent = new Intent(Intent.ACTION_VIEW);
+            httpIntent.setData(Uri.parse(LINKEDIN));
+            startActivity(httpIntent);
         });
 
-        btnReportGithub.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent httpIntent = new Intent(Intent.ACTION_VIEW);
-                httpIntent.setData(Uri.parse(GITHUB_ISSUE));
-                startActivity(httpIntent);
-            }
+        btnReportGithub.setOnClickListener(view -> {
+            Intent httpIntent = new Intent(Intent.ACTION_VIEW);
+            httpIntent.setData(Uri.parse(GITHUB_ISSUE));
+            startActivity(httpIntent);
         });
     }
 }

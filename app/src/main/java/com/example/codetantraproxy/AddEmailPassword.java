@@ -2,18 +2,12 @@ package com.example.codetantraproxy;
 
 import static com.example.codetantraproxy.Helper.Methods.deleteFromDB;
 import static com.example.codetantraproxy.Helper.Methods.fetchAllUserWithId;
-import static com.example.codetantraproxy.Helper.Methods.makeURLSafe;
 import static com.example.codetantraproxy.Helper.StringHelper.convertToURLSafe;
 import static com.example.codetantraproxy.Helper.apis.checkCredentials;
-import static com.example.codetantraproxy.Helper.apis.getUserCookies;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -25,7 +19,6 @@ import android.widget.Toast;
 import com.example.codetantraproxy.Helper.DatabaseHelper;
 import com.example.codetantraproxy.bean.User;
 
-import java.nio.charset.IllegalCharsetNameException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,9 +80,10 @@ public class AddEmailPassword extends AppCompatActivity {
                         CheckBox chbx = new CheckBox(getApplicationContext());
                         chbx.setId(i);
                         linearLayoutStudents.removeView(chbx);
+                        Toast.makeText(getApplicationContext(), "Deleted Successfully", Toast.LENGTH_LONG).show();
                     }
                     else {
-                        Log.d("error deleteing", "cannot dle");
+                        Toast.makeText(getApplicationContext(), "Error deleting", Toast.LENGTH_LONG).show();
                     }
                 }
                 finish();
@@ -108,10 +102,10 @@ public class AddEmailPassword extends AppCompatActivity {
                     try {
                         DatabaseHelper databaseHelper = DatabaseHelper.getDB(getApplicationContext());
                         databaseHelper.userDao().addUser(new User(email, password));
-                        Toast.makeText(getApplicationContext(), "User added successfully", Toast.LENGTH_LONG);
+                        Toast.makeText(getApplicationContext(), "User added successfully", Toast.LENGTH_LONG).show();
                     }
                     catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), "Error occured while adding user. Please try again later", new Integer(5));
+                        Toast.makeText(getApplicationContext(), "Error occured while adding user. Please try again later", Toast.LENGTH_LONG).show();
                     }
                     emailEditText.setText("");
                     passwordEditText.setText("");

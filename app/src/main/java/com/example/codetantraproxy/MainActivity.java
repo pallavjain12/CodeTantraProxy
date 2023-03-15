@@ -2,22 +2,17 @@ package com.example.codetantraproxy;
 
 import static com.example.codetantraproxy.Helper.Methods.checkForLoginDetails;
 import static com.example.codetantraproxy.Helper.Methods.loginCheck;
-import static com.example.codetantraproxy.Helper.Methods.makeURLSafe;
 import static com.example.codetantraproxy.Helper.Methods.updateFirstUser;
 import static com.example.codetantraproxy.Helper.StringHelper.convertToURLSafe;
-import static com.example.codetantraproxy.Helper.apis.checkCredentials;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.codetantraproxy.Helper.DatabaseHelper;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.codetantraproxy.bean.User;
 public class MainActivity extends AppCompatActivity {
     Button loginAboutButton;
@@ -56,12 +51,9 @@ public class MainActivity extends AppCompatActivity {
             About Button on Login page.
             It will redirect user to About activity.
          */
-        loginAboutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent about = new Intent(getApplicationContext(), LoginAboutActivity.class);
-                startActivity(about);
-            }
+        loginAboutButton.setOnClickListener(view -> {
+            Intent about = new Intent(getApplicationContext(), LoginAboutActivity.class);
+            startActivity(about);
         });
 
 
@@ -71,24 +63,20 @@ public class MainActivity extends AppCompatActivity {
             If found valid store user in db with id 1 and continue to home activity.
             If found invalid message will appear that password incorrect.
          */
-        loginLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String  email = loginEmailEditText.getText().toString();
-                String password = loginPasswordEditText.getText().toString();
-                password = convertToURLSafe(password);
-                Log.d("email + password", email + " " + password);
-                if (loginCheck(email, password)) {
-                    updateFirstUser(getApplicationContext(), email, password);
-                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                    intent.putExtra("email", email);
-                    intent.putExtra("password", password);
-                    startActivity(intent);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Incorrect userid or password", new Integer(3));
-                    loginPasswordEditText.setText("");
-                }
+        loginLoginButton.setOnClickListener(view -> {
+            String  email = loginEmailEditText.getText().toString();
+            String password = loginPasswordEditText.getText().toString();
+            password = convertToURLSafe(password);
+            if (loginCheck(email, password)) {
+                updateFirstUser(getApplicationContext(), email, password);
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                intent.putExtra("email", email);
+                intent.putExtra("password", password);
+                startActivity(intent);
+            }
+            else {
+                Toast.makeText(getApplicationContext(), "Incorrect userid or password", Toast.LENGTH_LONG).show();
+                loginPasswordEditText.setText("");
             }
         });
     }

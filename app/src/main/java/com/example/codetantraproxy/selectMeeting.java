@@ -7,12 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -30,8 +27,6 @@ public class selectMeeting extends AppCompatActivity {
 
     ScrollView scrollView;
     LinearLayout container;
-    TextView remainingStudents;
-    TextView markedStudents;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +51,6 @@ public class selectMeeting extends AppCompatActivity {
             radioGroup.setOrientation(LinearLayout.VERTICAL);
             for (Map.Entry<String, String> meeting : mapMeetings.entrySet()) {
                 String title = meeting.getKey();
-                String id = meeting.getValue();
                 RadioButton rdbtn = new RadioButton(this);
                 rdbtn.setId(View.generateViewId());
                 rdbtn.setText(title);
@@ -79,30 +73,24 @@ public class selectMeeting extends AppCompatActivity {
                     selectedStudents.put(email, cookie);
                     cb.setChecked(true);
                 }
-                cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                        if (isChecked) {
-                            selectedStudents.put(email, cookie);
-                        }
-                        else {
-                            selectedStudents.remove(email);
-                        }
+                cb.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+                    if (isChecked) {
+                        selectedStudents.put(email, cookie);
+                    }
+                    else {
+                        selectedStudents.remove(email);
                     }
                 });
             }
         }
 
-        otpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int selected = radioGroup.getCheckedRadioButtonId();
-                RadioButton rbtn = (RadioButton) findViewById(selected);
-                Intent intent = new Intent(getApplicationContext(), enterOTP.class);
-                intent.putExtra("mid", mapMeetings.get(rbtn.getText().toString()));
-                intent.putExtra("selectedstudentsMap", selectedStudents);
-                startActivity(intent);
-            }
+        otpButton.setOnClickListener(view -> {
+            int selected = radioGroup.getCheckedRadioButtonId();
+            RadioButton rbtn = (RadioButton) findViewById(selected);
+            Intent intent = new Intent(getApplicationContext(), enterOTP.class);
+            intent.putExtra("mid", mapMeetings.get(rbtn.getText().toString()));
+            intent.putExtra("selectedstudentsMap", selectedStudents);
+            startActivity(intent);
         });
 
     }
