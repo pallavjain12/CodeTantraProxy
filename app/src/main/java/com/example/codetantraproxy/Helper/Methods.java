@@ -72,15 +72,11 @@ public class Methods {
 
     public static boolean markAttendence(String cookie, String otp, String mid) {
         String response = submitOtp(cookie, otp, mid);
-        Log.d("response from codetantra",response);
         if (response.equals("invalid")) return false;
 
         try {
             JSONObject responseObj = new JSONObject(response);
-            if (responseObj.get("msg") != null && responseObj.get("msg").equals("Invalid OTP")) {
-                return false;
-            }
-            else return responseObj.get("msg") != null && responseObj.get("msg").equals("Successfull");
+            return responseObj.get("msg") != null && !(responseObj.get("msg").equals("Invalid OTP"));
         }
         catch (Exception e) {
             return  false;

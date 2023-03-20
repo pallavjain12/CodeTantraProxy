@@ -71,9 +71,6 @@ public class enterOTP extends AppCompatActivity {
                     tempList.add(em.getKey());
                     selectedStudents.remove(em.getKey());
                 }
-                else {
-                    break;
-                }
             }
             for (String s : tempList) {
                 TextView temp = new TextView(getApplicationContext());

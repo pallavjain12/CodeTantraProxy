@@ -37,9 +37,9 @@ public class AddEmailPassword extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_email_password);
 
-        addUserButton = (Button) findViewById(R.id.addAccount);
-        emailEditText = (EditText) findViewById(R.id.emailAddressEditText);
-        passwordEditText = (EditText) findViewById(R.id.paswordEditText);
+        addUserButton = findViewById(R.id.addAccount);
+        emailEditText = findViewById(R.id.emailAddressEditText);
+        passwordEditText = findViewById(R.id.paswordEditText);
         btnDeleteAccounts = findViewById(R.id.btnDeleteAccounts);
         linearLayoutStudents = findViewById(R.id.studentsList);
 
