@@ -33,7 +33,6 @@ public class Methods {
             Log.d("msg","user empty in checkforLogindetails");
             return null;
         }
-        Log.d("user null?", String.valueOf(user.getId()));
         if (checkCredentials(user.getEmailId(), user.getPassword())) {
             return user;
         }
@@ -76,7 +75,14 @@ public class Methods {
 
         try {
             JSONObject responseObj = new JSONObject(response);
-            return responseObj.get("msg") != null && !(responseObj.get("msg").equals("Invalid OTP"));
+            String msg = responseObj.get("msg").toString();
+            int result = Integer.parseInt(responseObj.get("result").toString());
+            if (result == 0)    return true;
+            if (result == -1) return true;
+            if (msg.equalsIgnoreCase("Successful"))   return true;
+            if (result == -2)   return false;
+            if (msg.equalsIgnoreCase("Invalid OTP"))  return false;
+            return false;
         }
         catch (Exception e) {
             return  false;

@@ -5,6 +5,7 @@ import static com.example.codetantraproxy.Helper.Methods.markAttendence;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -67,6 +68,7 @@ public class enterOTP extends AppCompatActivity {
             HashMap<String, String> tempHash = new HashMap<>(selectedStudents);
             for (Map.Entry<String, String> em : tempHash.entrySet()) {
                 String cookie = em.getValue();
+                Log.d("mid", mid);
                 if (markAttendence(cookie, otp, mid)) {
                     tempList.add(em.getKey());
                     selectedStudents.remove(em.getKey());

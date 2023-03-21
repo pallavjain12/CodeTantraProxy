@@ -107,12 +107,13 @@ public class apis {
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
             MediaType mediaType = MediaType.parse("application/json");
-            RequestBody body = RequestBody.create(mediaType, "{\"code\":\"" + otp + "\",\"mid\":\"" + mid + "\"}");
+            String requestBody = "{\"code\":\"" + otp + "\",\"mid\":\"" + mid + "\"}";
+            Log.d("request bosy", requestBody);
+            RequestBody body = RequestBody.create(mediaType, requestBody);
             Request request = new Request.Builder()
                     .url("https://iiitb.codetantra.com/secure/rest/dd/muap")
                     .method("POST", body)
                     .addHeader("Accept", "application/json")
-                    .addHeader("Content-Length", "62")
                     .addHeader("Content-Type", "application/json")
                     .addHeader("Host", "iiitb.codetantra.com")
                     .addHeader("sec-ch-ua", "\"Chromium\";v=\"104\", \" Not A;Brand\";v=\"99\", \"Google Chrome\";v=\"104\"")
@@ -122,15 +123,14 @@ public class apis {
                     .addHeader("X-Requested-With", "XMLHttpRequest")
                     .addHeader("Origin", "htps://iiitb.codetantra.com")
                     .addHeader("Sec-Fetch-Mode", "cors")
-                    .addHeader("X-Requested-With", "XMLHttpRequest")
                     .addHeader("Cookie", cookie)
                     .build();
             try {
                 Response response = client.newCall(request).execute();
-                assert response.body() != null;
                 return response.body().string();
             }
             catch(Exception e) {
+                Log.d("msg", "inside api submitOTP catch block");
                 return "invalid";
             }
         }
